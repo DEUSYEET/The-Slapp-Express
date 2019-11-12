@@ -1,0 +1,1 @@
+"C:\Program Files\MongoDB\Server\4.2\bin\mongod.exe" --dbpath "C:\Users\drago\Documents\GitHub\The-Slapp-Express\mongoData"
