@@ -1,0 +1,51 @@
+extend layout
+
+block content
+    from(id="signUpForm" method="post" action="/create")
+        label(for="username") Username:&nbsp;
+        input(type="text" name="username")
+        br
+        label(for="password") Password:&nbsp;
+        input(type="password" name="password")
+        br
+        label(for="email") Email:&nbsp;
+        input(type="email" name="email")
+        br
+        label(for="age") Age:&nbsp;
+        input(type="text" name="age")
+        br
+        label(for="questionOne") What is your gender?
+        br
+        input(type="radio" name="questionOne" value="male")
+        label(for="male") Male
+        br
+        input(type="radio" name="questionOne" value="female")
+        label(for="female") Female
+        br
+        input(type="radio" name="questionOne" value="non-binary")
+        label(for="non-binary") Non-Binary
+        br
+        label(for="questionTwo") Which tempature do you prefer?
+        br
+        input(type="radio" name="questionTwo" value="warm")
+        label(for="warm") Warm
+        br
+        input(type="radio" name="questionTwo" value="cold")
+        label(for="cold") Cold
+        br
+        input(type="radio" name="questionTwo" value="hot")
+        label(for="hot") Hot
+        br
+        label(for="questionThree") Why?
+        br
+        input(type="radio" name="questionThree" value="")
+        label(for="")
+        br
+        input(type="radio" name="questionThree" value="")
+        label(for="")
+        br
+        input(type="radio" name="questionThree" value="")
+        label(for="")
+        br
+
+        
