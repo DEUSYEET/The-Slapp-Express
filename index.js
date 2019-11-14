@@ -16,9 +16,9 @@ app.use(express.static(path.join(__dirname + "/public")));
 
 var urlencodedParser = bodyParser.urlencoded({
     extended: true
-  })
+})
 
-  
+
 //Routes
 app.get('/', route.index);
 app.get('/create', route.create);

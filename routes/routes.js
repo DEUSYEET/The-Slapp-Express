@@ -24,20 +24,15 @@ var User = mongoose.model('User_Collection', userSchema);
 
 
 exports.index = (req, res) => {
-    Person.find((err, person) => {
-      if (err) return console.error(err);
-      res.render('index', {
-      });
-    });
-  };
+    res.render('index', {});
+};
 
 
 exports.create = (req, res) => {
     res.render('signup', {
         title: 'Add Person'
     });
-  };
-
+};
 
 
 exports.createUser = (req, res) => {
@@ -67,18 +62,18 @@ exports.editUser = (req, res) => {
             return console.error(err)
         }
         user.name = req.body.name,
-        user.password = req.body.password,
-        user.email = req.body.email,
-        user.age = req.body.age,
-        user.ans1 = req.body.ans1,
-        user.ans2 = req.body.ans2,
-        user.ans3 = req.body.ans3,
-        user.save((err, user) => {
-            if (err){
-                return console.error(err)
-            }
-            console.log(req.body.name + ' added');
-        });
+            user.password = req.body.password,
+            user.email = req.body.email,
+            user.age = req.body.age,
+            user.ans1 = req.body.ans1,
+            user.ans2 = req.body.ans2,
+            user.ans3 = req.body.ans3,
+            user.save((err, user) => {
+                if (err) {
+                    return console.error(err)
+                }
+                console.log(req.body.name + ' added');
+            });
     });
     res.redirect('/');
 
