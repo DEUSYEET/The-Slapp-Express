@@ -22,6 +22,7 @@ var urlencodedParser = bodyParser.urlencoded({
 //Routes
 app.get('/', route.index);
 app.get('/create', route.create);
+
 app.post('/create', urlencodedParser, route.createUser);
 
 //-End Routes
