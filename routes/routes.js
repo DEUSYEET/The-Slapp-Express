@@ -1,8 +1,8 @@
 var mongoose = require('mongoose');
 const bcrypt = require("bcrypt-nodejs");
-var totallySecure;
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost/data');
+var passHash = '';
 
 var mdb = mongoose.connection;
 mdb.on('error', console.error.bind(console, 'connection error:'));
@@ -12,9 +12,8 @@ mdb.once('open', function (callback) {
 
 const makeHash = theStr =>{
     bcrypt.hash(theStr, null, null, (err,hash)=>{
-        totallySecure = hash;
+        passHash = hash;
     });
-
 }
 
 var userSchema = mongoose.Schema({
@@ -40,7 +39,7 @@ exports.index = (req, res) => {
         res.render('index',{
             currentUser:user
         });
-        console.log(user);
+        // console.log(user);
     })
 };
 
@@ -53,10 +52,11 @@ exports.create = (req, res) => {
 
 
 exports.createUser = (req, res) => {
-    makeHash(req.body.password);
+    makeHash(req.body.Username);
+    console.log(passHash);
     var user = new User({
         username: req.body.username,
-        password: totallySecure,
+        password: passHash,
         email: req.body.email,
         age: req.body.age,
         ans1: req.body.questionOne,
@@ -107,5 +107,5 @@ exports.editUser = (req, res) => {
 
 exports.passVerify = (req,res)=>{
     User.findOne({'username':req.body.username})
-    
+
 }
