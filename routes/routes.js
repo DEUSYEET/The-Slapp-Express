@@ -1,6 +1,9 @@
 var mongoose = require('mongoose');
 const bcrypt = require("bcrypt-nodejs");
 var totallySecure;
+var currentdate = new Date();
+var dateString = ((currentdate.getMonth() + 1) + "_" + currentdate.getDate() + "_" + currentdate.getFullYear());
+
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost/data');
 
@@ -14,7 +17,6 @@ const makeHash = theStr =>{
     bcrypt.hash(theStr, null, null, (err,hash)=>{
         totallySecure = hash;
     });
-
 }
 
 var userSchema = mongoose.Schema({
@@ -30,18 +32,22 @@ var userSchema = mongoose.Schema({
 
 var User = mongoose.model('User_Collection', userSchema);
 
-
-
 exports.index = (req, res) => {
-    User.findOne({'age':'420'},(err,user)=>{
-        if(err){
-            return console.error(err);
+    User.findOne({}, (err,user) => {
+        if(err) {
+            console.log(err);
+            res.redirect('login');
         }
+        res.cookie('lastVisit', dateString);
         res.render('index',{
-            currentUser:user
+            currentUser:user,
+            lastVisit:req.cookies.lastVisit
         });
-        console.log(user);
-    })
+    });
+};
+
+exports.login = (req, res) => {
+    res.render('login');
 };
 
 
@@ -70,7 +76,15 @@ exports.createUser = (req, res) => {
     res.redirect('/');
 };
 
-
+exports.logout = (req, res) => {
+    req.session.destroy(err =>{
+        if (err) {
+            console.log(err);
+        } else {
+            res.redirect('login');
+        }
+    });
+}
 
 // exports.edit = (req,res)=>{
 //     res.render('infoUpdate', {
@@ -100,12 +114,11 @@ exports.editUser = (req, res) => {
             console.log(req.body.username + ' added');
         });
     });
-    res.redirect('/');
-
+    res.redirect('login');
 };
 
 
 exports.passVerify = (req,res)=>{
-    User.findOne({'username':req.body.username})
+    User.findOne({'username':req.body.username, 'password':req.body.password});
     
 }
