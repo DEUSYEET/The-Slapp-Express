@@ -31,7 +31,7 @@ var User = mongoose.model('User_Collection', userSchema);
 exports.index = (req, res) => {
     res.cookie('lastVisit', dateString);
     res.render('index', {
-        currentUser: currentUser,
+        user: currentUser,
         lastVisit: req.cookies.lastVisit
     });
 };
@@ -50,7 +50,7 @@ exports.loginUser = (req, res) => {
                 req.session.user = {
                     isAuthenticated: true
                 }
-                res.render('index', { currentUser: currentUser });
+                res.render('index', { user: currentUser });
             }
         }
     });
@@ -96,36 +96,28 @@ exports.logout = (req, res) => {
     });
 }
 
-// exports.edit = (req,res)=>{
-//     res.render('infoUpdate', {
-//         person: 
-//     })
-// }
+exports.edit = (req,res)=>{
+    res.render('infoUpdate', {
+        user : currentUser
+    })
+}
 
 exports.editUser = (req, res) => {
-    User.findOne({
-        name: req.params.name
-    }, (err, user) => {
-        if (err) {
-            return console.error(err)
-        }
-
-        user.username = req.body.username,
-            user.password = req.body.password,
-            user.email = req.body.email,
-            user.age = req.body.age,
-            user.ans1 = req.body.ans1,
-            user.ans2 = req.body.ans2,
-            user.ans3 = req.body.ans3,
-            user.save((err, user) => {
-                if (err) {
-                    return console.error(err)
-                }
-                console.log(req.body.username + ' added');
-            });
+    console.log(currentUser.username);
+    User.findOneAndUpdate({
+        name: currentUser.username
+    }, {
+        username: req.body.username,
+        password: bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10)),
+        email: req.body.email,
+        age: req.body.age,
+        ans1: req.body.questionOne,
+        ans2: req.body.questionTwo,
+        ans3: req.body.questionThree
     });
     res.redirect('/');
 };
+
 
 
 exports.passVerify = (req, res) => {
