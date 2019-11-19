@@ -3,10 +3,10 @@ const bcrypt = require("bcrypt-nodejs");
 var totallySecure;
 var currentdate = new Date();
 var dateString = ((currentdate.getMonth() + 1) + "_" + currentdate.getDate() + "_" + currentdate.getFullYear());
+var currentUser;
 
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost/data');
-var passHash = '';
 
 var mdb = mongoose.connection;
 mdb.on('error', console.error.bind(console, 'connection error:'));
@@ -16,7 +16,7 @@ mdb.once('open', function (callback) {
 
 const makeHash = theStr =>{
     bcrypt.hash(theStr, null, null, (err,hash)=>{
-        passHash = hash;
+        totallySecure = hash;
     });
 }
 
@@ -60,17 +60,17 @@ exports.create = (req, res) => {
 
 
 exports.createUser = (req, res) => {
-    makeHash(req.body.Username);
-    console.log(passHash);
+    console.log(totallySecure);
     var user = new User({
         username: req.body.username,
-        password: passHash,
+        password: bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10)),
         email: req.body.email,
         age: req.body.age,
         ans1: req.body.questionOne,
         ans2: req.body.questionTwo,
         ans3: req.body.questionThree
     });
+    currentUser = user;
     user.save((err, user) => {
         if (err) return console.error(err);
         console.log(req.body.username + ' added');
