@@ -15,7 +15,7 @@ const checkAuth = (req, res, next) => {
     if(req.session.user && req.session.user.isAuthenticated) {
         next();
     } else {
-        res.redirect('/login');
+        res.redirect('/');
     }
 }
 
@@ -37,9 +37,11 @@ var urlencodedParser = bodyParser.urlencoded({
 app.get('/', route.login);
 app.get('/index', checkAuth, route.index);
 app.get('/logout', route.logout);
-app.get('/create', route.create);
-app.post('/create', urlencodedParser, route.createUser);
+app.get('/signup', route.create);
+app.get('/edit', checkAuth, route.edit);
+app.post('/signup', urlencodedParser, route.createUser);
 app.post('/login', urlencodedParser, route.loginUser);
+app.post('/edit', urlencodedParser, route.editUser);
 
 //-End Routes
 

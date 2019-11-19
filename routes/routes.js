@@ -45,7 +45,7 @@ exports.loginUser = (req, res) => {
         if (err) {
             console.log(err);
         } else {
-            if (bcrypt.compareSync(req.body.password, user.password)) {
+            if (user && bcrypt.compareSync(req.body.password, user.password)) {
                 currentUser = user;
                 req.session.user = {
                     isAuthenticated: true
@@ -94,41 +94,41 @@ exports.logout = (req, res) => {
             res.redirect('/');
         }
     });
-}
-
-// exports.edit = (req,res)=>{
-//     res.render('infoUpdate', {
-//         person: 
-//     })
-// }
-
-exports.editUser = (req, res) => {
-    User.findOne({
-        name: req.params.name
-    }, (err, user) => {
-        if (err) {
-            return console.error(err)
-        }
-
-        user.username = req.body.username,
-            user.password = req.body.password,
-            user.email = req.body.email,
-            user.age = req.body.age,
-            user.ans1 = req.body.ans1,
-            user.ans2 = req.body.ans2,
-            user.ans3 = req.body.ans3,
-            user.save((err, user) => {
-                if (err) {
-                    return console.error(err)
-                }
-                console.log(req.body.username + ' added');
-            });
-    });
-    res.redirect('/');
 };
 
+exports.edit = (req,res)=>{
+    res.render('infoUpdate', {
+        user : currentUser
+    });
+};
 
-exports.passVerify = (req, res) => {
-    User.findOne({ 'username': req.body.username, 'password': req.body.password });
+exports.editUser = (req, res) => {
+    // console.log(req);
 
-}
+    if (req.body.password != ''){
+
+        User.findOneAndUpdate({'username': currentUser.username}, {$set: {
+            'username': req.body.username,
+            'password': bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10)),
+            'email': req.body.email,
+            'age': req.body.age,
+            'ans1': req.body.questionOne,
+            'ans2': req.body.questionTwo,
+            'ans3': req.body.questionThree
+        }}, (err, todo) => {
+                if (err) throw err;
+            });
+    } else {
+        User.findOneAndUpdate({'username': currentUser.username}, {$set: {
+            'username': req.body.username,
+            'email': req.body.email,
+            'age': req.body.age,
+            'ans1': req.body.questionOne,
+            'ans2': req.body.questionTwo,
+            'ans3': req.body.questionThree
+        }}, (err, todo) => {
+                if (err) throw err;
+            });
+    }
+    res.redirect('/index');
+};
