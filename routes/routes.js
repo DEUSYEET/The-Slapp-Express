@@ -5,6 +5,7 @@ var currentdate = new Date();
 var dateString = ((currentdate.getMonth() + 1) + "_" + currentdate.getDate() + "_" + currentdate.getFullYear());
 var currentUser;
 
+
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost/data');
 
@@ -13,12 +14,6 @@ mdb.on('error', console.error.bind(console, 'connection error:'));
 mdb.once('open', function (callback) {
 
 });
-
-const makeHash = theStr => {
-    bcrypt.hash(theStr, null, null, (err, hash) => {
-        totallySecure = hash;
-    });
-}
 
 var userSchema = mongoose.Schema({
     username: String,
@@ -34,16 +29,10 @@ var userSchema = mongoose.Schema({
 var User = mongoose.model('User_Collection', userSchema);
 
 exports.index = (req, res) => {
-    User.findOne({}, (err, user) => {
-        if (err) {
-            console.log(err);
-            res.redirect('login');
-        }
-        res.cookie('lastVisit', dateString);
-        res.render('index', {
-            currentUser: user,
-            lastVisit: req.cookies.lastVisit
-        });
+    res.cookie('lastVisit', dateString);
+    res.render('index', {
+        currentUser: currentUser,
+        lastVisit: req.cookies.lastVisit
     });
 };
 
@@ -51,26 +40,21 @@ exports.login = (req, res) => {
     res.render('login');
 };
 
-exports.edit = (req, res) => {
-    var siteUser;
-    User.findOne({
-        "age": "420"
-    }, (err, user) => {
-        siteUser = user;
-        console.log(siteUser.username);
-        res.render('infoUpdate', {
-            user: siteUser
-        });
-    });
-}
-
 exports.loginUser = (req, res) => {
-    User.findOne({
-        "username": req.body.username
-    }, (err, user) => {
-        console.log(bcrypt.compareSync(req.body.password, user.password));
-    })
-}
+    User.findOne({ 'username': req.body.username }, (err, user) => {
+        if (err) {
+            console.log(err);
+        } else {
+            if (bcrypt.compareSync(req.body.password, user.password)) {
+                currentUser = user;
+                req.session.user = {
+                    isAuthenticated: true
+                }
+                res.render('index', { currentUser: currentUser });
+            }
+        }
+    });
+};
 
 exports.create = (req, res) => {
     res.render('signup', {
@@ -80,7 +64,6 @@ exports.create = (req, res) => {
 
 
 exports.createUser = (req, res) => {
-    console.log(totallySecure);
     var user = new User({
         username: req.body.username,
         password: bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10)),
@@ -91,11 +74,16 @@ exports.createUser = (req, res) => {
         ans3: req.body.questionThree
     });
     currentUser = user;
+
     user.save((err, user) => {
         if (err) return console.error(err);
         console.log(req.body.username + ' added');
     });
-    res.redirect('/');
+
+    req.session.user = {
+        isAuthenticated: true
+    }
+    res.render('index', { currentUser: currentUser });
 };
 
 exports.logout = (req, res) => {
@@ -103,7 +91,7 @@ exports.logout = (req, res) => {
         if (err) {
             console.log(err);
         } else {
-            res.redirect('login');
+            res.redirect('/');
         }
     });
 }
@@ -136,14 +124,11 @@ exports.editUser = (req, res) => {
                 console.log(req.body.username + ' added');
             });
     });
-    res.redirect('login');
+    res.redirect('/');
 };
 
 
 exports.passVerify = (req, res) => {
-    User.findOne({
-        'username': req.body.username,
-        'password': req.body.password
-    });
+    User.findOne({ 'username': req.body.username, 'password': req.body.password });
 
 }
