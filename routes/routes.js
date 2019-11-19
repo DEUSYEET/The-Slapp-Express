@@ -51,6 +51,19 @@ exports.login = (req, res) => {
     res.render('login');
 };
 
+exports.edit = (req,res) =>{
+    siteUser = User.findOne({'age':'420'});
+    console.log(siteUser.username);
+    res.render('infoUpdate', {
+        user : siteUser
+    });
+}
+
+exports.loginUser = (req,res)=>{
+    User.findOne({"username":req.body.username}, (err,user)=>{
+        console.log(bcrypt.compareSync(req.body.password,user.password));
+    })
+}
 
 exports.create = (req, res) => {
     res.render('signup', {

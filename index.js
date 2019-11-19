@@ -14,6 +14,8 @@ const app = express();
 app.set("view engine", "pug");
 app.set("views", __dirname + "/views");
 app.use(express.static(path.join(__dirname + "/public")));
+
+
 app.use(cookieParser());
 
 var urlencodedParser = bodyParser.urlencoded({
@@ -27,8 +29,9 @@ app.get('/main', route.index);
 app.get('/logout', route.logout);
 app.get('/signup', route.create);
 app.get('/login', route.login);
+app.get('/edit', route.edit);
 app.post('/create', urlencodedParser, route.createUser);
-app.post('/login', urlencodedParser, route.index);
+app.post('/login', urlencodedParser, route.loginUser);
 
 
 
