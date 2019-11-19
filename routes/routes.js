@@ -14,8 +14,8 @@ mdb.once('open', function (callback) {
 
 });
 
-const makeHash = theStr =>{
-    bcrypt.hash(theStr, null, null, (err,hash)=>{
+const makeHash = theStr => {
+    bcrypt.hash(theStr, null, null, (err, hash) => {
         totallySecure = hash;
     });
 }
@@ -34,15 +34,15 @@ var userSchema = mongoose.Schema({
 var User = mongoose.model('User_Collection', userSchema);
 
 exports.index = (req, res) => {
-    User.findOne({}, (err,user) => {
-        if(err) {
+    User.findOne({}, (err, user) => {
+        if (err) {
             console.log(err);
             res.redirect('login');
         }
         res.cookie('lastVisit', dateString);
-        res.render('index',{
-            currentUser:user,
-            lastVisit:req.cookies.lastVisit
+        res.render('index', {
+            currentUser: user,
+            lastVisit: req.cookies.lastVisit
         });
     });
 };
@@ -51,17 +51,24 @@ exports.login = (req, res) => {
     res.render('login');
 };
 
-exports.edit = (req,res) =>{
-    siteUser = User.findOne({'age':'420'});
-    console.log(siteUser.username);
-    res.render('infoUpdate', {
-        user : siteUser
+exports.edit = (req, res) => {
+    var siteUser;
+    User.findOne({
+        "age": "420"
+    }, (err, user) => {
+        siteUser = user;
+        console.log(siteUser.username);
+        res.render('infoUpdate', {
+            user: siteUser
+        });
     });
 }
 
-exports.loginUser = (req,res)=>{
-    User.findOne({"username":req.body.username}, (err,user)=>{
-        console.log(bcrypt.compareSync(req.body.password,user.password));
+exports.loginUser = (req, res) => {
+    User.findOne({
+        "username": req.body.username
+    }, (err, user) => {
+        console.log(bcrypt.compareSync(req.body.password, user.password));
     })
 }
 
@@ -92,7 +99,7 @@ exports.createUser = (req, res) => {
 };
 
 exports.logout = (req, res) => {
-    req.session.destroy(err =>{
+    req.session.destroy(err => {
         if (err) {
             console.log(err);
         } else {
@@ -114,26 +121,29 @@ exports.editUser = (req, res) => {
         if (err) {
             return console.error(err)
         }
-        
+
         user.username = req.body.username,
-        user.password = req.body.password,
-        user.email = req.body.email,
-        user.age = req.body.age,
-        user.ans1 = req.body.ans1,
-        user.ans2 = req.body.ans2,
-        user.ans3 = req.body.ans3,
-        user.save((err, user) => {
-            if (err) {
-                return console.error(err)
-            }
-            console.log(req.body.username + ' added');
-        });
+            user.password = req.body.password,
+            user.email = req.body.email,
+            user.age = req.body.age,
+            user.ans1 = req.body.ans1,
+            user.ans2 = req.body.ans2,
+            user.ans3 = req.body.ans3,
+            user.save((err, user) => {
+                if (err) {
+                    return console.error(err)
+                }
+                console.log(req.body.username + ' added');
+            });
     });
     res.redirect('login');
 };
 
 
-exports.passVerify = (req,res)=>{
-    User.findOne({'username':req.body.username, 'password':req.body.password});
-    
+exports.passVerify = (req, res) => {
+    User.findOne({
+        'username': req.body.username,
+        'password': req.body.password
+    });
+
 }
