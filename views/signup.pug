@@ -1,10 +1,10 @@
 extend layout
 
 block content
-    div(="colorWrapperSignup")
+    div(id="colorWrapperSignup")
         div(id="wrapperSignup")
             h1(class="mainHeader") Sign Up
-            form(id="signUpForm" method="post" action="/create")
+            form(id="signUpForm" method="post" action="/signup")
                 label(for="username") Username:&nbsp;
                 br
                 input(type="text" name="username" class="inputBox")
@@ -46,18 +46,19 @@ block content
                 label(for="hot") Hot
                 br
                 br
-                label(for="questionThree") Why?
+                label(for="questionThree") Do you like Winnie The Pooh?
                 br
-                input(type="radio" name="questionThree" value="")
-                label(for="")
+                input(type="radio" name="questionThree" value="Y")
+                label(for="Y") Yes
                 br
-                input(type="radio" name="questionThree" value="")
-                label(for="")
+                input(type="radio" name="questionThree" value="DY")
+                label(for="DY") Definitely Yes
                 br
-                input(type="radio" name="questionThree" value="")
-                label(for="")
+                input(type="radio" name="questionThree" value="WA")
+                label(for="WA") No(Wrong Answer)
                 br
                 br
                 input(type="submit" class="submitButton")
-                a(href="/login")
+                a(href="/")
                     p(id="testP") Log In
+

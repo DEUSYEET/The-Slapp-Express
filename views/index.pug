@@ -1,4 +1,12 @@
 extends layout
 
 block content
-    p #{currentUser.id}
+    div(id="colorWrapperIndex")
+        div(id="wrapperIndex")
+            p Username: #{user.username}
+            p Password: &#8226;&#8226;&#8226;&#8226;&#8226;
+            p Email: #{user.email}
+            p Age: #{user.age}
+            p What is your gender? - Answer: #{user.ans1}
+            p Which tempature do you prefer? - Answer #{user.ans2}
+            p Do you like Winnie The Pooh? - Answer #{user.ans3}

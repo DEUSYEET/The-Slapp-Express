@@ -4,7 +4,7 @@ block content
     div(id="colorWrapperEdit")
         div(id="wrapperEdit")
             h1(class="mainHeader") Edit Information
-            form(id="editForm" method="post" action="/edit" + user.username)
+            form(id="editForm" method="post" action="/edit")
                 label(for="username") Username:&nbsp;
                 br
                 input(type="text" name="username" class="inputBox" value=user.username)
@@ -49,16 +49,16 @@ block content
                 br
                 br
                 p Current Answer: #{value=user.ans3}
-                label(for="questionThree") Why?
+                label(for="questionThree") Do you like Winnie The Pooh?
                 br
-                input(type="radio" name="questionThree" value="")
-                label(for="")
+                input(type="radio" name="questionThree" value="Y")
+                label(for="Y") Yes
                 br
-                input(type="radio" name="questionThree" value="")
-                label(for="")
+                input(type="radio" name="questionThree" value="DY")
+                label(for="DY") Definitely Yes
                 br
-                input(type="radio" name="questionThree" value="")
-                label(for="")
+                input(type="radio" name="questionThree" value="WA")
+                label(for="WA") No(Wrong Answer)
                 br
                 br
                 input(type="submit" class="submitButton")
