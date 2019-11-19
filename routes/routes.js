@@ -104,5 +104,4 @@ exports.editUser = (req, res) => {
 
 exports.passVerify = (req,res)=>{
     User.findOne({'username':req.body.username})
-
 }
