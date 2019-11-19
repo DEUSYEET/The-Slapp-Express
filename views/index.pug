@@ -4,9 +4,20 @@ block content
     div(id="colorWrapperIndex")
         div(id="wrapperIndex")
             p Username: #{user.username}
-            p Password: &#8226;&#8226;&#8226;&#8226;&#8226;
+            br
             p Email: #{user.email}
+            br
             p Age: #{user.age}
-            p What is your gender? - Answer: #{user.ans1}
-            p Which tempature do you prefer? - Answer #{user.ans2}
-            p Do you like Winnie The Pooh? - Answer #{user.ans3}
+            br
+            p What is your gender?
+            p Answer: #{user.ans1}
+            br
+            p Which tempature do you prefer?
+            p Answer: #{user.ans2}
+            br
+            p Do you like Winnie The Pooh?
+            p Answer: #{user.ans3}
+            br
+            br
+            a(href="/logout")
+                p Log Out
