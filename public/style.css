@@ -55,7 +55,7 @@ nav ul a:hover {
     margin: 0 auto;
     padding: 10px;
     text-align: justify;
-    max-width: 262px;
+    max-width: 280px;
     min-height: 320px;
     clear: both;
     text-decoration: none;
@@ -93,7 +93,7 @@ nav ul a:hover {
     margin: 0 auto;
     padding: 10px;
     text-align: justify;
-    max-width: 256px;
+    max-width: 280px;
     min-height: 170px;
     clear: both;
     text-decoration: none;
@@ -108,6 +108,20 @@ nav ul a:hover {
     font-size: 20px;
 }
 
+#wrapperIndex{
+    margin: 0 auto;
+    padding: 10px;
+    text-align: justify;
+    max-width: 280px;
+    min-height: 190px;
+    clear: both;
+    text-decoration: none;
+    background-color: rgba(249,180,191,0.2);
+}
+
+#wrapperIndex p{
+    font-size: 20px;
+}
 
 .inputBox{
     height: 30px;
@@ -151,6 +165,14 @@ nav ul a:hover {
     margin-top:25px;
 }
 
+#colorWrapperIndex{
+    max-width: 100%;
+    min-height: 190px;
+    background-color: rgba(249,180,191,0.2);
+    padding:13px;
+    margin-top:25px;
+}
+
 #testP{
     float:right;
     text-align: justify;
@@ -158,7 +180,19 @@ nav ul a:hover {
     margin-left: -18px;
 }
 
+#editP{
+    float:right;
+    margin-top:-20px;
+}
+
+#logP{
+    float:left;
+    margin-top:-20px;
+}
+
 .mainHeader{
     margin-top: 4px;
     margin-bottom: 12px;
 }
+
+

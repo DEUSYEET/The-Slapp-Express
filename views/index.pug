@@ -3,10 +3,24 @@ extends layout
 block content
     div(id="colorWrapperIndex")
         div(id="wrapperIndex")
-            p Username: #{user.username}
-            p Password: &#8226;&#8226;&#8226;&#8226;&#8226;
-            p Email: #{user.email}
-            p Age: #{user.age}
-            p What is your gender? - Answer: #{user.ans1}
-            p Which tempature do you prefer? - Answer #{user.ans2}
-            p Do you like Winnie The Pooh? - Answer #{user.ans3}
+            h1(class="mainHeader") Account Information
+            p Username: 
+            br
+            p Email: 
+            br
+            p Age:
+            br
+            p What is your gender?
+            p Answer:
+            br
+            p Which tempature do you prefer?
+            p Answer: 
+            br
+            p Do you like Winnie The Pooh?
+            p Answer:
+            br
+            br
+            a(id="logP" href="/logout")
+                p Log Out
+            a(id="editP" href="/edit")
+                p Edit
