@@ -44,7 +44,7 @@ app.get('/login', route.login);
 app.get('/edit', route.edit);
 app.post('/create', urlencodedParser, route.createUser);
 app.post('/login', urlencodedParser, route.loginUser);
-app.post('/edit', route.editUser);
+app.post('/edit', urlencodedParser, route.editUser);
 
 //-End Routes
 

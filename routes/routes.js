@@ -8,6 +8,7 @@ var currentUser;
 
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost/data');
+mongoose.set('useFindAndModify', false);
 
 var mdb = mongoose.connection;
 mdb.on('error', console.error.bind(console, 'connection error:'));
@@ -103,24 +104,32 @@ exports.edit = (req,res)=>{
 }
 
 exports.editUser = (req, res) => {
-    console.log(currentUser.username);
-    User.findOneAndUpdate({
-        name: currentUser.username
-    }, {
-        username: req.body.username,
-        password: bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10)),
-        email: req.body.email,
-        age: req.body.age,
-        ans1: req.body.questionOne,
-        ans2: req.body.questionTwo,
-        ans3: req.body.questionThree
-    });
+    // console.log(req);
+
+    if (req.body.password != ''){
+
+        User.findOneAndUpdate({'username': currentUser.username}, {$set: {
+            'username': req.body.username,
+            'password': bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10)),
+            'email': req.body.email,
+            'age': req.body.age,
+            'ans1': req.body.questionOne,
+            'ans2': req.body.questionTwo,
+            'ans3': req.body.questionThree
+        }}, (err, todo) => {
+                if (err) throw err;
+            });
+    } else {
+        User.findOneAndUpdate({'username': currentUser.username}, {$set: {
+            'username': req.body.username,
+            'email': req.body.email,
+            'age': req.body.age,
+            'ans1': req.body.questionOne,
+            'ans2': req.body.questionTwo,
+            'ans3': req.body.questionThree
+        }}, (err, todo) => {
+                if (err) throw err;
+            });
+    }
     res.redirect('/');
 };
-
-
-
-exports.passVerify = (req, res) => {
-    User.findOne({ 'username': req.body.username, 'password': req.body.password });
-
-}
