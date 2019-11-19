@@ -1,10 +1,6 @@
 var mongoose = require('mongoose');
 const bcrypt = require("bcrypt-nodejs");
-var totallySecure;
-var currentdate = new Date();
-var dateString = ((currentdate.getMonth() + 1) + "_" + currentdate.getDate() + "_" + currentdate.getFullYear());
 var currentUser;
-
 
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost/data');
@@ -54,6 +50,10 @@ exports.loginUser = (req, res) => {
             }
         }
     });
+        res.render('index',{
+            currentUser:user
+        });
+    })
 };
 
 exports.create = (req, res) => {
