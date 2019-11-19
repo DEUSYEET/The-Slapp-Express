@@ -10,9 +10,11 @@ const bodyParser = require('body-parser')
 
 const app = express();
 
+
 app.set("view engine", "pug");
 app.set("views", __dirname + "/views");
 app.use(express.static(path.join(__dirname + "/public")));
+app.use(cookieParser());
 
 var urlencodedParser = bodyParser.urlencoded({
     extended: true
@@ -20,12 +22,13 @@ var urlencodedParser = bodyParser.urlencoded({
 
 
 //Routes
-app.get('/', route.index);
+app.get('/', route.login);
+app.get('/main', route.index);
 app.get('/create', route.create);
 app.post('/create', urlencodedParser, route.createUser);
+app.post('/login', urlencodedParser, route.index);
 
 //-End Routes
-
 
 
 app.listen(3000);
