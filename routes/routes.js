@@ -43,6 +43,11 @@ exports.index = (req, res) => {
     })
 };
 
+exports.login = (req, res) => {
+    res.render('login', {
+        title: 'Login'
+    });
+}
 
 exports.create = (req, res) => {
     res.render('signup', {
@@ -69,14 +74,6 @@ exports.createUser = (req, res) => {
     });
     res.redirect('/');
 };
-
-
-
-// exports.edit = (req,res)=>{
-//     res.render('infoUpdate', {
-//         person: 
-//     })
-// }
 
 exports.editUser = (req, res) => {
     User.findOne({
