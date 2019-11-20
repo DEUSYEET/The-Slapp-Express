@@ -34,9 +34,16 @@ exports.index = (req, res) => {
     } else {
         lastVisited = "This is your first time here!";
     }
-    res.render('index', {
-        currentUser: currentUser,
-        lastVisit: lastVisited
+    User.findById(currentUser.id, (err, user) => {
+        if (err) {
+            console.log(err);
+        } else {
+            currentUser = user;
+            res.render('index', {
+                currentUser: user,
+                lastVisit: lastVisited
+            });
+        }
     });
 };
 
