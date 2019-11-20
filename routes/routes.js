@@ -54,8 +54,8 @@ exports.loginUser = (req, res) => {
                 req.session.user = {
                     isAuthenticated: true
                 }
-                res.redirect('/index');
             }
+            res.redirect('/index');
         }
     });
 };
