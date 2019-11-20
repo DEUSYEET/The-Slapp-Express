@@ -25,10 +25,8 @@ var userSchema = mongoose.Schema({
 var User = mongoose.model('User_Collection', userSchema);
 
 exports.index = (req, res) => {
-    res.cookie('lastVisit', dateString);
     res.render('index', {
-        currentUser: currentUser,
-        lastVisit: req.cookies.lastVisit
+        currentUser: currentUser
     });
 };
 
@@ -50,10 +48,6 @@ exports.loginUser = (req, res) => {
             }
         }
     });
-        res.render('index',{
-            currentUser:user
-        });
-    })
 };
 
 exports.create = (req, res) => {
@@ -96,39 +90,40 @@ exports.logout = (req, res) => {
     });
 };
 
-exports.edit = (req,res)=>{
+exports.edit = (req, res) => {
     res.render('infoUpdate', {
-        user : currentUser
+        user: currentUser
     });
 };
 
 exports.editUser = (req, res) => {
-    // console.log(req);
-
-    if (req.body.password != ''){
-
-        User.findOneAndUpdate({'username': currentUser.username}, {$set: {
-            'username': req.body.username,
-            'password': bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10)),
-            'email': req.body.email,
-            'age': req.body.age,
-            'ans1': req.body.questionOne,
-            'ans2': req.body.questionTwo,
-            'ans3': req.body.questionThree
-        }}, (err, todo) => {
-                if (err) throw err;
-            });
+    if (req.body.password != '') {
+        User.findByIdAndUpdate(currentUser.id, {
+            $set: {
+                'username': req.body.username,
+                'password': bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10)),
+                'email': req.body.email,
+                'age': req.body.age,
+                'ans1': req.body.questionOne,
+                'ans2': req.body.questionTwo,
+                'ans3': req.body.questionThree
+            }
+        }, (err, todo) => {
+            if (err) throw err;
+        });
     } else {
-        User.findOneAndUpdate({'username': currentUser.username}, {$set: {
-            'username': req.body.username,
-            'email': req.body.email,
-            'age': req.body.age,
-            'ans1': req.body.questionOne,
-            'ans2': req.body.questionTwo,
-            'ans3': req.body.questionThree
-        }}, (err, todo) => {
-                if (err) throw err;
-            });
+        User.findByIdAndUpdate(currentUser.id, {
+            $set: {
+                'username': req.body.username,
+                'email': req.body.email,
+                'age': req.body.age,
+                'ans1': req.body.questionOne,
+                'ans2': req.body.questionTwo,
+                'ans3': req.body.questionThree
+            }
+        }, (err, todo) => {
+            if (err) throw err;
+        });
     }
-    res.redirect('/index');
+    res.render('index', {currentUser : currentUser});
 };
