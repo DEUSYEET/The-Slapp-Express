@@ -1,5 +1,7 @@
 var mongoose = require('mongoose');
 const bcrypt = require("bcrypt-nodejs");
+var currentdate = new Date();
+var dateString = ((currentdate.getMonth() + 1) + "_" + currentdate.getDate() + "_" + currentdate.getFullYear());
 var currentUser;
 
 mongoose.Promise = global.Promise;
@@ -25,8 +27,16 @@ var userSchema = mongoose.Schema({
 var User = mongoose.model('User_Collection', userSchema);
 
 exports.index = (req, res) => {
+    var lastVisited;
+    res.cookie('lastVisit', dateString, {maxAge : 999999999999999});
+    if(req.cookies.lastVisit) {
+        lastVisited = req.cookies.lastVisit;
+    } else {
+        lastVisited = "This is your first time here!";
+    }
     res.render('index', {
-        currentUser: currentUser
+        currentUser: currentUser,
+        lastVisit: lastVisited
     });
 };
 
@@ -44,7 +54,7 @@ exports.loginUser = (req, res) => {
                 req.session.user = {
                     isAuthenticated: true
                 }
-                res.render('index', { currentUser: currentUser });
+                res.redirect('/index');
             }
         }
     });
@@ -125,5 +135,5 @@ exports.editUser = (req, res) => {
             if (err) throw err;
         });
     }
-    res.render('index', {currentUser : currentUser});
+    res.redirect('/index');
 };
